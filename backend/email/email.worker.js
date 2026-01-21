@@ -1,5 +1,5 @@
-import Worker from 'bullmq';
-import { createRedisCOnnection } from '../config/redis';
+import {Worker} from 'bullmq';
+import { createRedisCOnnection } from '../config/redis.js';
 
 const emailWorker = new Worker(
     "email-queue",

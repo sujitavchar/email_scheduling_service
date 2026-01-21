@@ -1,8 +1,8 @@
-import Queue, { delay } from "bullmq";
-import { createRedisCOnnection } from "../config/redis";
+import {Queue, delay } from "bullmq";
+import { createRedisCOnnection } from "../config/redis.js";
 
 const emailQeue = new Queue(
-    email-queue,
+    "email-queue",
     {
         connection: createRedisCOnnection
     }
