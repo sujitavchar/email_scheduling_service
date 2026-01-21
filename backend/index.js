@@ -2,6 +2,8 @@ import { addEmailJob } from "./email/email.queue.js";
 import "./email/email.worker.js";
 import express from "express";
 import cors from "cors";
+import 'dotenv/config';
+
 
 const app = express();
 app.use(express.json());
@@ -16,6 +18,6 @@ app.post("/schedule-email", async (req,res) => {
     res.json({status : 200, message: "Email scheduled"});
 });
 
-app.listen(4000, ()=>{
-    console.log("Server listening at port 4000 ")
+app.listen(process.env.PORT, ()=>{
+    console.log(`Server listening at port ${process.env.PORT}`);
 })

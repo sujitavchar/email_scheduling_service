@@ -1,4 +1,5 @@
 import Redis from "ioredis";
+import 'dotenv/config';
 
 export const createRedisCOnnection = ()=> {
     return new Redis({
