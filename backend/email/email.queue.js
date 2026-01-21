@@ -18,7 +18,7 @@ async function addEmailJob(data) {
         }
     );
 
-    console.log("Email scduled successfully");
+    console.log("Job added in queue");
 }
 
 export {addEmailJob};

@@ -13,17 +13,17 @@ app.use(cors());
 
 
 app.post("/schedule-email", async (req,res) => {
-    const {to, subject, body, sendAt} = req.body;
-
+    const {to, subject, body, sendAt, sender_id} = req.body;
+    const id = generateId();
+    
     await db.query(
-        `INSERT INTO emails (id, to_email, subject, body, send_at)
-        VALUES ($1,$2,$3,$4,$5)`,
-        [id, to, subject, body, sendAt]
+        `INSERT INTO emails (id, to_email, subject, body, send_at, sender_id)
+        VALUES ($1,$2,$3,$4,$5,$6)`,
+        [id, to, subject, body, sendAt, sender_id]
     );
 
-    const id = generateId();
 
-    await addEmailJob({id, to, subject, body, sendAt});
+    await addEmailJob({id});
 
     res.json({status : 200, message: "Email scheduled"});
 });
