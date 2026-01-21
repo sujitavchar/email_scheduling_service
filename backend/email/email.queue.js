@@ -8,12 +8,12 @@ const emailQeue = new Queue(
     }
 );
 
-async function addEmailJob(data, delayMs=0) {
+async function addEmailJob(data) {
     await emailQeue.add(
         "send-email", //job name
         data,
         {
-            delay: delayMs,
+            delay: process.env.EMAIL_MIN_DELAY_MS,
             attempts: 3
         }
     );

@@ -13,7 +13,7 @@ const emailWorker = new Worker(
         console.log("Email sent successfully");
     },
     {
-        connection: createRedisCOnnection,
+        connection: createRedisCOnnection() ,
         concurrency: 3
     }
 );
