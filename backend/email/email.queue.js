@@ -1,19 +1,27 @@
 import {Queue, delay } from "bullmq";
 import { createRedisCOnnection } from "../config/redis.js";
+import {db} from "../config/db.js"
 
-const emailQeue = new Queue(
+const emailQueue = new Queue(
     "email-queue",
     {
-        connection: createRedisCOnnection
+        connection: createRedisCOnnection()
     }
 );
 
 async function addEmailJob(data) {
-    await emailQeue.add(
-        "send-email", //job name
+    const delayMs = Math.max(
+        new Date(data.sendAt).getTime() - Date.now(),
+        process.env.EMAIL_MIN_DELAY_MS || 0
+    );
+
+    console.log("New job delay : ", delayMs);
+
+    await emailQueue.add(
+        data.id, //job name
         data,
         {
-            delay: process.env.EMAIL_MIN_DELAY_MS,
+            delay: delayMs,
             attempts: 3
         }
     );
@@ -21,4 +29,32 @@ async function addEmailJob(data) {
     console.log("Job added in queue");
 }
 
-export {addEmailJob};
+
+//Adds 'scheduled','failed', 'processing' jobs again in queue maintaining idempotency
+async function resumeEmails() {
+  const result = await db.query(
+    `SELECT * FROM emails WHERE status IN ('failed')`
+  );
+
+  for (const email of result.rows) {
+    const delayMs = Math.max(new Date(email.send_at).getTime() - Date.now(), 0);
+
+    try {
+      await emailQueue.add(
+        email.id,          
+        { id: email.id },
+        { delay: delayMs, removeOnComplete: true, removeOnFail: false }
+      );
+      console.log("Rescheduled email:", email.id);
+    } catch (err) {
+      if (err.message.includes("Job already exists")) {
+        console.log("Email already in queue, skipping:", email.id);
+      } else {
+        console.error("Failed to re-add email:", email.id, err);
+      }
+    }
+  }
+}
+
+
+export {addEmailJob, resumeEmails};
