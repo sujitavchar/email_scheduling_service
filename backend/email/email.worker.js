@@ -1,6 +1,7 @@
 import {Worker} from 'bullmq';
 import { createRedisCOnnection } from '../config/redis.js';
 import {db} from '../config/db.js'
+import { sendEtherealEmail } from './email.sendEmail.js';
 
 const emailWorker = new Worker(
     "email-queue",
@@ -26,10 +27,8 @@ const emailWorker = new Worker(
         await db.query("UPDATE emails SET status='processing' WHERE id=$1", [emailId]);
         
 
-        //to do: Email  sending
-        console.log("Processing job for:", email.to_email);
-        await new Promise((res) => setTimeout(res, 1000)); 
-
+        //Send Ethereal email
+        await sendEtherealEmail(email);
 
         console.log("Email sent successfully:", emailId);
 
