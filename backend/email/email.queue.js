@@ -5,7 +5,12 @@ import {db} from "../config/db.js"
 const emailQueue = new Queue(
     "email-queue",
     {
-        connection: createRedisCOnnection()
+        connection: createRedisCOnnection(),
+        limiter: {
+            max: 50,
+            duration: 1000 * 60 * 60, // 1 hour
+            groupKey: (job) => job.data.sender_id,
+        }
     }
 );
 
