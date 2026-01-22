@@ -14,7 +14,8 @@ export default function Dashboard() {
     const fetchEmails = async () => {
         try {
             const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/all-emails?sender_id=${senderId}`);
-
+            console.log("called:" ,`${process.env.REACT_APP_API_BASE_URL}/all-emails?sender_id=${senderId}` );
+            console.log("response = ", res);
     
             const data = await res.json();
             console.log(data.data);
