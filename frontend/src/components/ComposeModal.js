@@ -9,18 +9,13 @@ export default function ComposeModal({ onClose, onSuccess }) {
 
     const handleSend = async () => {
         try {
-            const sendAtISO = timestamp
-                ? new Date(
-                    new Date(timestamp).getTime() -
-                    new Date(timestamp).getTimezoneOffset() * 60000
-                ).toISOString()
-                : new Date().toISOString();
-
+            const local = new Date(timestamp);
+            const utcISO = new Date(local.getTime() - local.getTimezoneOffset() * 60000).toISOString(); 
             const payload = {
                 to,
                 subject,
                 body,
-                sendAt: sendAtISO,
+                sendAt: utcISO,
                 sender_id: "A1b2C3d4"
             };
 
