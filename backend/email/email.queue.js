@@ -39,7 +39,7 @@ async function resumeEmails() {
   );
 
   for (const email of result.rows) {
-    const delayMs = new Date(data.sendAt).getTime() - Date.now();
+    const delayMs = new Date(email.sendAt).getTime() - Date.now();
 
     try {
       await emailQueue.add(
