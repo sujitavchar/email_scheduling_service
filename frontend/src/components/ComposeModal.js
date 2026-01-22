@@ -36,10 +36,10 @@ export default function ComposeModal({ onClose, onSuccess }) {
     <div className="modal-backdrop">
       <div className="modal">
         <h3>Compose Email</h3>
-        <input placeholder="To" value={to} onChange={(e) => setTo(e.target.value)} />
-        <input placeholder="Subject" value={subject} onChange={(e) => setSubject(e.target.value)} />
-        <textarea placeholder="Body" value={body} onChange={(e) => setBody(e.target.value)} />
-        <input type="datetime-local" value={timestamp} onChange={(e) => setTimestamp(e.target.value)} />
+        <input required placeholder="To" value={to} onChange={(e) => setTo(e.target.value)} />
+        <input required placeholder="Subject" value={subject} onChange={(e) => setSubject(e.target.value)} />
+        <textarea required placeholder="Body" value={body} onChange={(e) => setBody(e.target.value)} />
+        <input required type="datetime-local" value={timestamp} onChange={(e) => setTimestamp(e.target.value)} />
         <div className="actions">
           <button onClick={handleSend}>Send</button>
           <button onClick={onClose}>Cancel</button>
