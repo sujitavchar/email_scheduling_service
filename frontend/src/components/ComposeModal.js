@@ -17,7 +17,7 @@ export default function ComposeModal({ onClose, onSuccess }) {
         sender_id: "A1b2C3d4" 
       };
 
-      const res = await fetch("http://localhost:4000/schedule-email", {
+      const res = await fetch(`${process.env.BASE_URL}/schedule-email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

@@ -13,7 +13,7 @@ export default function Dashboard() {
 
     const fetchEmails = async () => {
         try {
-            const res = await fetch(`http://localhost:4000/all-emails?sender_id=${senderId}`);
+            const res = await fetch(`${process.env.BASE_URL}/all-emails?sender_id=${senderId}`);
 
     
             const data = await res.json();
