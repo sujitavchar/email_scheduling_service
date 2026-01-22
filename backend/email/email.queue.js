@@ -38,7 +38,7 @@ async function addEmailJob(data) {
 //Adds 'scheduled','failed', 'processing' jobs again in queue maintaining idempotency
 async function resumeEmails() {
   const result = await db.query(
-    `SELECT * FROM emails WHERE status IN ('failed')`
+    `SELECT * FROM emails WHERE status IN ('failed','scheduled','processing')`
   );
 
   for (const email of result.rows) {
