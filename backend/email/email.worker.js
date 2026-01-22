@@ -27,8 +27,8 @@ const emailWorker = new Worker(
         await db.query("UPDATE emails SET status='processing' WHERE id=$1", [emailId]);
         
 
-        //Send Ethereal email
-        await sendEtherealEmail(email);
+        //Send Ethereal email - works only on local machine
+        //await sendEtherealEmail(email);
 
         console.log("Email sent successfully:", emailId);
 
