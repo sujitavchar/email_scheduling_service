@@ -9,8 +9,9 @@ export default function ComposeModal({ onClose, onSuccess }) {
 
     const handleSend = async () => {
         try {
-            const local = new Date(timestamp);
-            const utcISO = new Date(local.getTime() - local.getTimezoneOffset() * 60000).toISOString(); 
+            const localDate = new Date(timestamp);
+            const sendAtUTC = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000).toISOString();
+            
             const payload = {
                 to,
                 subject,
