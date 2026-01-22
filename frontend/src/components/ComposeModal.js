@@ -1,0 +1,50 @@
+import React, { useState } from "react";
+import "./ComposeModal.css";
+
+export default function ComposeModal({ onClose, onSuccess }) {
+  const [to, setTo] = useState("");
+  const [subject, setSubject] = useState("");
+  const [body, setBody] = useState("");
+  const [timestamp, setTimestamp] = useState("");
+
+  const handleSend = async () => {
+    try {
+      const payload = {
+        to,
+        subject,
+        body,
+        sendAt: timestamp || new Date().toISOString(),
+        sender_id: "A1b2C3d4" 
+      };
+
+      const res = await fetch("http://localhost:4000/schedule-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      alert(data.message || "Email scheduled");
+      onClose();
+      onSuccess();
+    } catch (err) {
+      alert("Failed to send email");
+    }
+  };
+
+  return (
+    <div className="modal-backdrop">
+      <div className="modal">
+        <h3>Compose Email</h3>
+        <input placeholder="To" value={to} onChange={(e) => setTo(e.target.value)} />
+        <input placeholder="Subject" value={subject} onChange={(e) => setSubject(e.target.value)} />
+        <textarea placeholder="Body" value={body} onChange={(e) => setBody(e.target.value)} />
+        <input type="datetime-local" value={timestamp} onChange={(e) => setTimestamp(e.target.value)} />
+        <div className="actions">
+          <button onClick={handleSend}>Send</button>
+          <button onClick={onClose}>Cancel</button>
+        </div>
+      </div>
+    </div>
+  );
+}

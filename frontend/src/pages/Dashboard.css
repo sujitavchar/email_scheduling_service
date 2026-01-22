@@ -1,0 +1,29 @@
+.dashboard-container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.email-list {
+  margin-top: 20px;
+}
+
+.email-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.status.scheduled { color: orange; }
+.status.failed { color: red; }
+.status.completed { color: green; }
+.status.processing { color: blue; }
