@@ -1,13 +1,12 @@
 import Redis from "ioredis";
-import 'dotenv/config';
+import "dotenv/config";
 
-export const createRedisCOnnection = ()=> {
-    return new Redis({
-            host: process.env.REDIS_HOST ,
-            port: Number(process.env.REDIS_PORT),
-            password: process.env.REDIS_PASSWORD || undefined,
-            maxRetriesPerRequest: null
-        }
-    )
+export const createRedisCOnnection = () => {
+    if (!process.env.REDIS_URL) {
+        throw new Error("REDIS_URL is not defined");
+    }
+    return new Redis(process.env.REDIS_URL, {
+        maxRetriesPerRequest: null,
+        enableReadyCheck: false,
+    });
 };
-
