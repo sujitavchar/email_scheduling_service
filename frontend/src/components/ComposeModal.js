@@ -16,7 +16,7 @@ export default function ComposeModal({ onClose, onSuccess }) {
                 to,
                 subject,
                 body,
-                sendAt: utcISO,
+                sendAt: sendAtUTC,
                 sender_id: "A1b2C3d4"
             };
 
