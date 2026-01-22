@@ -25,7 +25,7 @@ async function sendEtherealEmail(email) {
   const transport = await initEthereal();
 
   const info = await transport.sendMail({
-    from: `"${email.sender_name}" <${email.sender_email}>`,
+    from: `"${email.name}"`,
     to: email.to_email,
     subject: email.subject,
     text: email.body,
