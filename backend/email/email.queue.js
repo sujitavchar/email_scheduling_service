@@ -15,10 +15,7 @@ const emailQueue = new Queue(
 );
 
 async function addEmailJob(data) {
-    const delayMs = Math.max(
-        new Date(data.sendAt).getTime() - Date.now(),
-        Number(process.env.EMAIL_MIN_DELAY_MS) || 0
-    );
+    const delayMs = new Date(data.sendAt).getTime() - Date.now();
 
     console.log("New job delay : ", delayMs);
 
@@ -42,7 +39,7 @@ async function resumeEmails() {
   );
 
   for (const email of result.rows) {
-    const delayMs = Math.max(new Date(email.send_at).getTime() - Date.now(), 0);
+    const delayMs = new Date(data.sendAt).getTime() - Date.now();
 
     try {
       await emailQueue.add(
