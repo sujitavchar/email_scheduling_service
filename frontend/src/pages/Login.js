@@ -12,7 +12,7 @@ export default function Login() {
             //TODO: implement oauth
 
             // redirect to backend Google OAuth
-            window.location.href = `${process.env.FRONTEND_BASE_URL}/dashboard`;
+            window.location.href = "/dashboard";
         } catch (err) {
             alert("Login failed");
         }
