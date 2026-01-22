@@ -36,7 +36,7 @@ export default function Dashboard() {
             <div className="email-list">
                 {emails.map((email) => (
                     <div key={email.id} className="email-item">
-                        <div className="time">{email.send_at}...</div>
+                        <div className="time">{email.send_at}</div>
                         <div className="row">
                             <span className="to">To: {email.to_email}</span>
                             <span className={`status ${email.status}`}>{email.status}</span>
