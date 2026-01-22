@@ -19,6 +19,11 @@ async function addEmailJob(data) {
 
     console.log("New job delay : ", delayMs);
 
+    console.log("RAW sendAt:", data.sendAt);
+    console.log("Parsed sendAt (ms):", new Date(data.sendAt).getTime());
+    console.log("Now (ms):", Date.now());
+
+
     await emailQueue.add(
         data.id, //job name
         data,
