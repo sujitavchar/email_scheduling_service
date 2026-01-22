@@ -35,6 +35,26 @@ resumeEmails()
     res.json({status : 200, message: "Email scheduled"});
 });
 
+app.get("/all-emails", async(req, res)=> {
+    const {sender_id} = req.query;
+
+    try {
+      const result = await db.query(`SELECT * FROM emails WHERE sender_id=$1 ORDER BY created_at ASC` , [sender_id]);
+
+      res.json({
+        status: 200,
+        message: "Data Fetched successfully",
+        data: result.rows
+      });
+    } catch (e) {
+      res.json({
+        status: 500,
+        message: `Internal server error. ${e}`
+      })
+    }
+   
+});
+
 app.listen(process.env.PORT, ()=>{
     console.log(`Server listening at port ${process.env.PORT}`);
 })
