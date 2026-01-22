@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cors());
 
 
-resumeEmails()
+await resumeEmails()
   .then(()=> console.log("Stuck/failed emails rescheduled"))
   .catch((err) => console.error("Failed to resume emails", err));
 
