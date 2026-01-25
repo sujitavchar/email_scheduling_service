@@ -28,7 +28,7 @@ const emailWorker = new Worker(
         
 
         //Send Ethereal email - works only on local machine
-        //await sendEtherealEmail(email);
+        await sendEtherealEmail(email);
 
         console.log("Email sent successfully:", emailId);
 
