@@ -3,24 +3,52 @@ import jwtDecode from "jwt-decode";
 
 const AuthContext = createContext();
 
-export const AuthProvider = async ({ children }) => {
-    const [user, setUser] = useState(null);
-    //const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/senderidbyemail?sender_email=${senderId}`);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const token = localStorage.getItem("token");
+  useEffect(() => {
+    const initAuth = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
         
-        if (token) {
         const decoded = jwtDecode(token);
-        setUser({ name: decoded.name, email: decoded.email });
-        }
-    }, []);
 
-    return (
-        <AuthContext.Provider value={{ user, setUser }}>
-        {children}
-        </AuthContext.Provider>
-    );
+      
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/senderbyemail?sender_email=${decoded.email}`);
+
+        if (!res.ok) throw new Error("Failed to fetch sender");
+
+        const data = await res.json();
+
+     
+        setUser({
+          name: decoded.name,
+          email: decoded.email,
+          sender_id: data.data?.id, 
+        });
+      } catch (err) {
+        console.error(err);
+        localStorage.removeItem("token");
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initAuth();
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, setUser, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => useContext(AuthContext);
