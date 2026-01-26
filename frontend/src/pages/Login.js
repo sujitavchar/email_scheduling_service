@@ -9,10 +9,10 @@ export default function Login() {
 
     const handleGoogleLogin = async () => {
         try {
-            //TODO: implement oauth
+            //TODO: implement oauth - DOne
 
-            // redirect to backend Google OAuth
-            window.location.href = "/dashboard";
+            // redirect to backend Google OAuth - Done
+            window.location.href = process.env.REACT_APP_API_BASE_URL+ "/auth/google";
         } catch (err) {
             alert("Login failed");
         }
