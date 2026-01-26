@@ -99,6 +99,7 @@ app.get("/senderidbyemail", async (req, res) => {
 
     res.status(200).json({
       message: "Data fetched successfully",
+      count : result.rows.count(),
       data: result.rows[0] || null,
     });
   } catch (e) {
