@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ComposeModal from "../components/ComposeModal";
+import {useAuth} from '../context/AuthContext'
 import "./Dashboard.css";
 
 export default function Dashboard() {
