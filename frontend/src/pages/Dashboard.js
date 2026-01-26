@@ -9,6 +9,7 @@ export default function Dashboard() {
 
     //TODO: take sender id from oauth
     // replace after auth
+    const { user, loading } = useAuth();
 
     const senderId = "A1b2C3d4";
 
@@ -31,6 +32,9 @@ export default function Dashboard() {
         <div className="dashboard-container">
             <div className="header">
                 <h2>Dashboard</h2>
+                <h3>Welcome  {user.name}</h3>
+                <h4>Email : {user.email}</h4>
+                <h4>id: {user.sender_id}</h4>
                 <button onClick={() => setShowModal(true)}>Compose</button>
             </div>
 

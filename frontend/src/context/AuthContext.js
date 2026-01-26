@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }) => {
         if (!res.ok) throw new Error("Failed to fetch sender");
 
         const data = await res.json();
-
      
         setUser({
           name: decoded.name,
