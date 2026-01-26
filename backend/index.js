@@ -14,6 +14,8 @@ import jwt from 'jsonwebtoken';
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(passport.initialize());
+
 
 
 await resumeEmails()
@@ -22,14 +24,14 @@ await resumeEmails()
 
 //auth routes
 app.get(
-  "auth/google",
+  "/auth/google",
   passport.authenticate("google", {
     scope: ["profile", "email"]
   })
 );
 
 app.get(
-  "auth/google/callback",
+  "/auth/google/callback",
   passport.authenticate("google", { session: false }),
   (req, res) => {
     const token = jwt.sign(
