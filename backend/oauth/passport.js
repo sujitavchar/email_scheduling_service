@@ -1,5 +1,6 @@
 import passport from "passport";
 import GoogleStrategy from 'passport-google-oauth20';
+import { createUser, findUserByEmail } from "../utils/utils.userservice";
 
 
 passport.use(
@@ -10,13 +11,21 @@ passport.use(
       callbackURL: process.env.GOOGLE_CALLBACK_URL
     },
     async (accessToken, refreshToken, profile, done) => {
-      const user = {
-        name: profile.displayName,
-        email: profile.emails[0].value
-      };
 
-      // TODO: save/find user in DB
-      return done(null, user);
+      try {
+        const name = profile.displayName;
+        const email = profile.emails[0].value;
+
+        let user = await findUserByEmail(email);
+
+        if (!user) {
+          await createUser(name, email);
+        }
+        return done(null, user);
+      } catch (err) {
+        return done(err, null);
+      }
+
     }
   )
 );
