@@ -1,6 +1,6 @@
 import passport from "passport";
 import GoogleStrategy from 'passport-google-oauth20';
-import { createUser, findUserByEmail } from "../utils/utils.userservice";
+import { createUser, findUserByEmail } from "../utils/utils.userservice.js";
 
 
 passport.use(
