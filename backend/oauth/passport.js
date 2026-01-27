@@ -16,13 +16,14 @@ passport.use(
         const name = profile.displayName;
         const email = profile.emails[0].value;
 
-        //console.log(name, email);
+        console.log(name, email, "->profile");
 
         let user = await findUserByEmail(email);
 
         if (!user) {
           user = await createUser({name, email});
         }
+        console.log(user , "->passport.js");
         return done(null, user);
       } catch (err) {
         return done(err, null);

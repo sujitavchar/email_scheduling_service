@@ -20,16 +20,18 @@ export const AuthProvider = ({ children }) => {
         const decoded = jwtDecode(token);
 
       
-        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/senderbyemail?sender_email=${decoded.email}`);
+        // const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/senderbyemail?sender_email=${decoded.email}`);
 
-        if (!res.ok) throw new Error("Failed to fetch sender");
+        // if (!res.ok) throw new Error("Failed to fetch sender");
 
-        const data = await res.json();
+        //const data = await res.json();
+
+         console.log(decoded.name,decoded.email,decoded.id , "->Auth context" ) ; 
      
         setUser({
           name: decoded.name,
           email: decoded.email,
-          sender_id: data.data?.id, 
+          sender_id: decoded.id
         });
       } catch (err) {
         console.error(err);
