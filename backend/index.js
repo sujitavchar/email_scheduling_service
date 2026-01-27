@@ -14,6 +14,7 @@ import jwt from 'jsonwebtoken';
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.set("trust proxy", 1);
 app.use(passport.initialize());
 
 
