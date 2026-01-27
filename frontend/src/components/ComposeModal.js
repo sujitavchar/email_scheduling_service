@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import "./ComposeModal.css";
+import {useAuth} from '../context/AuthContext'
 
 export default function ComposeModal({ onClose, onSuccess }) {
     const [to, setTo] = useState("");
     const [subject, setSubject] = useState("");
     const [body, setBody] = useState("");
     const [timestamp, setTimestamp] = useState("");
+    const { user, loading } = useAuth();
+    
 
     const handleSend = async () => {
         try {
@@ -16,7 +19,7 @@ export default function ComposeModal({ onClose, onSuccess }) {
                 subject,
                 body,
                 sendAt: new Date(timestamp).toISOString(),
-                sender_id: "A1b2C3d4"
+                sender_id: user.sender_id
             };
 
             const res = await fetch(

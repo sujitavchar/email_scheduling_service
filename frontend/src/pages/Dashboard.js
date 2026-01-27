@@ -12,7 +12,7 @@ export default function Dashboard() {
     const { user, loading } = useAuth();
     console.log(user);
 
-    const senderId = "A1b2C3d4";
+    const senderId = user.sender_id;
 
     const fetchEmails = async () => {
         try {
