@@ -10,6 +10,7 @@ export default function Dashboard() {
     //TODO: take sender id from oauth
     // replace after auth
     const { user, loading } = useAuth();
+    console.log(user);
 
     const senderId = "A1b2C3d4";
 
