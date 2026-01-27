@@ -13,8 +13,8 @@ const createUser = async ({ name, email }) => {
 
     const id = generateId();
     const result = await db.query(
-        "INSERT INTO senders (id, name, email) VALUES ($1, $2, $3 ) RETURNING id, name, email",
-        [id, name, email]
+        "INSERT INTO senders (id, email, name, provider) VALUES ($1, $2, $3 ,$4) RETURNING id, name, email, provider",
+        [id,email, name , "ethereal"]
     );
     return result.rows[0];
 };
