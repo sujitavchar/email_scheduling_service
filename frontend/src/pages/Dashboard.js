@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import ComposeModal from "../components/ComposeModal";
 import { useAuth } from "../context/AuthContext";
-import { Navigate } from "react-router-dom";
 import "./Dashboard.css";
 
 export default function Dashboard() {
@@ -10,34 +10,34 @@ export default function Dashboard() {
 
   const { user, loading } = useAuth();
 
+  useEffect(() => {
+    if (loading || !user) return;
+
+    const fetchEmails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const res = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/all-emails?sender_id=${user.sender_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await res.json();
+        setEmails(data.data || []);
+      } catch (err) {
+        alert("Failed to fetch emails");
+      }
+    };
+
+    fetchEmails();
+  }, [loading, user]);
+
   if (loading) return <p>Loading...</p>;
   if (!user) return <Navigate to="/login" replace />;
-
-  const senderId = user.sender_id; // ✅ SAFE NOW
-
-  const fetchEmails = async () => {
-    try {
-      const token = localStorage.getItem("token");
-
-      const res = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/all-emails?sender_id=${senderId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const data = await res.json();
-      setEmails(data.data || []);
-    } catch (err) {
-      alert("Failed to fetch emails");
-    }
-  };
-
-  useEffect(() => {
-    fetchEmails();
-  }, [senderId]);
 
   return (
     <div className="dashboard-container">
@@ -72,7 +72,7 @@ export default function Dashboard() {
       {showModal && (
         <ComposeModal
           onClose={() => setShowModal(false)}
-          onSuccess={fetchEmails}
+          onSuccess={() => {}}
         />
       )}
     </div>
