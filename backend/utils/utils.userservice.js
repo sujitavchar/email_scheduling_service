@@ -9,6 +9,14 @@ const findUserByEmail = async (sender_email) => {
   return result.rows[0] || null;
 };
 
+const findUserByID = async (sender_email) => {
+  const result = await db.query(
+    "SELECT id, name, email FROM senders WHERE email = $1",
+    [sender_email]
+  );
+  return result.rows[0] || null;
+};
+
 const createUser = async ({ name, email }) => {
 
     const id = generateId();

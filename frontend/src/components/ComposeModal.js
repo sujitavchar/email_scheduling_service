@@ -36,7 +36,8 @@ export default function ComposeModal({ onClose, onSuccess }) {
             onClose();
             onSuccess();
         } catch (err) {
-            alert("Failed to send email");
+            console.log("Failed to schedule ", err)
+            alert("Failed to schedule email");
         }
     };
 
