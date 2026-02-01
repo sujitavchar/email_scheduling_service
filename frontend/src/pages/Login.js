@@ -20,10 +20,22 @@ export default function Login() {
 
 
     return (
-        <div className="login-container">
-            <button className="google-btn" onClick={handleGoogleLogin}>
-                Sign in with Google
-            </button>
-        </div>
+    <div className="page">
+      <div className="card">
+        <h1 className="title">Post Master</h1>
+        <p className="subtitle">Bulk email scheduling service</p>
+
+        <ul className="features">
+          <li>📧 Schedule emails with a single-click sign in / sign up</li>
+          <li>📂 Bulk email scheduling using CSV upload</li>
+          <li>🔐 Secured with OAuth 2.0</li>
+          <li>⚡ Don’t worry about schedules even if the server crashes</li>
+        </ul>
+
+        <button className="google-btn" onClick={handleGoogleLogin}>
+          Sign in with Google
+        </button>
+      </div>
+    </div>
     );
 } 
