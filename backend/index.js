@@ -69,7 +69,7 @@ app.get("/all-emails", async(req, res)=> {
     const {sender_id} = req.query;
 
     try {
-      const result = await db.query(`SELECT * FROM emails WHERE sender_id=$1 ORDER BY created_at ASC` , [sender_id]);
+      const result = await db.query(`SELECT * FROM emails WHERE sender_id=$1 ORDER BY created_at DESC` , [sender_id]);
 
       res.json({
         status: 200,

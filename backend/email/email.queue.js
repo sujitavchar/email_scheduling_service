@@ -7,7 +7,7 @@ const emailQueue = new Queue(
     {
         connection: createRedisCOnnection(),
         limiter: {
-            max: 50,
+            max: 100,
             duration: 1000 * 60 * 60, // 1 hour
             groupKey: (job) => job.data.sender_id,
         }

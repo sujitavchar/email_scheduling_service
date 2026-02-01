@@ -40,34 +40,57 @@ export default function Dashboard() {
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div className="dashboard-container">
-      <div className="header">
-        <h2>Dashboard</h2>
-        <h3>Welcome {user.name}</h3>
-        <h4>Email: {user.email}</h4>
-        <h4>ID: {user.sender_id}</h4>
-        <button onClick={() => setShowModal(true)}>Compose</button>
-      </div>
+    <div className="dashboard">
+      {/* LEFT PANEL */}
+      <aside className="sidebar">
+        <h2 className="logo">Post Master</h2>
 
-      <div className="email-list">
-        {emails.map((email) => (
-          <div key={email.id} className="email-item">
-            <div className="time">{email.send_at}</div>
-            <div className="row">
-              <span className="to">To: {email.to_email}</span>
-              <span className={`status ${email.status}`}>
-                {email.status}
-              </span>
+        <div className="profile">
+          <div className="avatar">{user.name[0]}</div>
+          <h3>{user.name}</h3>
+          <p>{user.email}</p>
+          <span className="sender-id">ID: {user.sender_id}</span>
+        </div>
+
+        <button className="compose-btn" onClick={() => setShowModal(true)}>
+          ✉ Compose
+        </button>
+      </aside>
+
+      {/* RIGHT PANEL */}
+      <main className="content">
+        <h2 className="section-title">Scheduled Emails</h2>
+
+        <div className="email-list">
+          {emails.map((email) => (
+            <div key={email.id} className="email-card">
+              <div className="email-header">
+                <span className="to">To: {email.to_email}</span>
+                <span className={`status-tag ${email.status}`}>
+                  {email.status}
+                </span>
+              </div>
+
+              <div className="subject">
+                {email.subject.slice(0, 40)}...
+              </div>
+
+              <div className="body">
+                {email.body.slice(0, 80)}...
+              </div>
+
+             <div className="time">
+                Scheduled at: {new Date(email.send_at).toLocaleDateString()}{" "}
+                {new Date(email.send_at).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </div>
+
             </div>
-            <div className="subject">
-              Subject: {email.subject.slice(0, 30)}...
-            </div>
-            <div className="body">
-              {email.body.slice(0, 50)}...
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </main>
 
       {showModal && (
         <ComposeModal
