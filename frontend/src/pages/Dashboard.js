@@ -7,6 +7,10 @@ import "./Dashboard.css";
 export default function Dashboard() {
   const [emails, setEmails] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showCompleted, setShowCompleted] = useState(true);
+  const [showFailed, setShowFailed] = useState(true);
+  const [showScheduled, setShowScheduled] = useState(true);
+
 
   const { user, loading } = useAuth();
 
@@ -39,6 +43,12 @@ export default function Dashboard() {
   if (loading) return <p>Loading...</p>;
   if (!user) return <Navigate to="/login" replace />;
 
+  const filteredEmails = emails.filter((email) => {
+    if (email.status === "completed" && showCompleted) return true;
+    if (email.status === "failed" && showFailed) return true;
+    if (email.status === "scheduled" && showScheduled) return true;
+  });
+
   return (
     <div className="dashboard">
       {/* LEFT PANEL */}
@@ -59,10 +69,42 @@ export default function Dashboard() {
 
       {/* RIGHT PANEL */}
       <main className="content">
+
+        <div className="filters">
+
+          <label>
+            <input
+              type="checkbox"
+              checked={showScheduled}
+              onChange={() => setShowScheduled(!showScheduled)}
+            />
+            Scheduled
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={showCompleted}
+              onChange={() => setShowCompleted(!showCompleted)}
+            />
+            Completed
+          </label>
+
+          <label>
+            <input
+              type="checkbox"
+              checked={showFailed}
+              onChange={() => setShowFailed(!showFailed)}
+            />
+            Failed
+          </label>
+        </div>
+
+
+
         <h2 className="section-title">Scheduled Emails</h2>
 
         <div className="email-list">
-          {emails.map((email) => (
+          {filteredEmails.map((email) => (
             <div key={email.id} className="email-card">
               <div className="email-header">
                 <span className="to">To: {email.to_email}</span>
@@ -78,14 +120,19 @@ export default function Dashboard() {
               <div className="body">
                 {email.body.slice(0, 80)}...
               </div>
+                <div className="time">
+                  Scheduled at:{" "}
+                  {new Date(email.send_at).toLocaleString("en-IN", {
+                    timeZone: "Asia/Kolkata",
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })}
+                </div>
 
-             <div className="time">
-                Scheduled at: {new Date(email.send_at).toLocaleDateString()}{" "}
-                {new Date(email.send_at).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </div>
 
             </div>
           ))}
@@ -95,7 +142,7 @@ export default function Dashboard() {
       {showModal && (
         <ComposeModal
           onClose={() => setShowModal(false)}
-          onSuccess={() => {}}
+          onSuccess={() => { }}
         />
       )}
     </div>
