@@ -14,7 +14,7 @@ Built using **Node.js, BullMQ, Redis, PostgreSQL**, and a simple frontend dashbo
 -  Per-sender rate limiting  
 -  Frontend dashboard for monitoring  
 
-/docs/architecture.png
+![Architecture Diagram](./docs/architecture.png)
 
 ## Architecture overview: 
 ### 1. Scheduling 
