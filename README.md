@@ -1,5 +1,44 @@
-# email_scheduling_service
-An email_scheduling_service which  is scalable , can  survive server retarts and follows idempotency.
+# 📧 Email Scheduling Service
+
+A **scalable, fault-tolerant email scheduling service** that survives server restarts and guarantees **idempotent email delivery**.  
+Built using **Node.js, BullMQ, Redis, PostgreSQL**, and a simple frontend dashboard.
+
+---
+
+## ✨ Key Highlights
+
+-  Delayed & scheduled email delivery  
+-  Idempotent job execution (no duplicate emails)  
+-  Persistent job storage (Redis + PostgreSQL)  
+-  Horizontally scalable worker model  
+-  Per-sender rate limiting  
+-  Frontend dashboard for monitoring  
+
+/docs/architecture.png
+
+## Architecture overview: 
+### 1. Scheduling 
+    - User schedules email from the frontend
+    - Database registers it as a new email entry
+    - Then the job is added  into BullMQ queue. BullMQ maintains jobs data on redis.
+    - The status of cuurent job is set as 'processing'  and Ethereal is invoked to send email.
+    - On job completion, status is updated to  'completed'.
+    - On job failure , status is updated to 'failed'.
+    - BullMQ processes jobs based on delay time. It works using FIFO by default.
+    - It maintains unique jobs in the queue , maintaining idempotency
+
+### 2. Persistance: 
+    - If server crashes or restarts , the scheduled jobs will not be lost . Jobs are stored on Redis DB and on postgre as well. We can recover the loss and resume the schdule again.
+    - During restart, server scans DB for failed jobs and reschedules them in BullMQ.
+
+### 3. Rate Limiting and concurrency : 
+    - Rate Limiting is implemented by using 'limiter' configuration while creating new Queue in BullMQ. It is implemented on per sender where each sender can schedule 50 emails per hour.
+    - For now concurrency is hardcoded to 3, 3 workers will work on jobs concurrently. 
+
+### 4. Features implemented: 
+    - Backend: scheduler, persistence, rate limiting, concurrency, DB, idempotency
+    - Frontend: dashboard, compose, tables
+
 
 ## To run backend : 
     1. Start redis server (for local machine)
@@ -38,27 +77,5 @@ An email_scheduling_service which  is scalable , can  survive server retarts and
     SMTP_PASS=your_ethereal_pass
 
 
-## Architecture overview: 
-### 1. Scheduling 
-    - User schedules email from the frontend
-    - Database registers it as a new email entry
-    - Then the job is added  into BullMQ queue. BullMQ maintains jobs data on redis.
-    - The status of cuurent job is set as 'processing'  and Ethereal is invoked to send email.
-    - On job completion, status is updated to  'completed'.
-    - On job failure , status is updated to 'failed'.
-    - BullMQ processes jobs based on delay time. It works using FIFO by default.
-    - It maintains unique jobs in the queue , maintaining idempotency
-
-### 2. Persistance: 
-    - If server crashes or restarts , the scheduled jobs will not be lost . Jobs are stored on Redis DB and on postgre as well. We can recover the loss and resume the schdule again.
-    - During restart, server scans DB for failed jobs and reschedules them in BullMQ.
-
-### 3. Rate Limiting and concurrency : 
-    - Rate Limiting is implemented by using 'limiter' configuration while creating new Queue in BullMQ. It is implemented on per sender where each sender can schedule 50 emails per hour.
-    - For now concurrency is hardcoded to 3, 3 workers will work on jobs concurrently. 
-
-### 4. Features implemented: 
-    - Backend: scheduler, persistence, rate limiting, concurrency, DB, idempotency
-    - Frontend: dashboard, compose, tables
 
     
